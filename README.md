@@ -42,7 +42,7 @@ CLI brand: **XGIC CLI** (`xgic`) only — see [ADR-0005](https://github.com/xgic
 
 ## Image pin
 
-`.devcontainer/devcontainer.json` currently tracks:
+`.devcontainer/devcontainer.json` currently pins:
 
 ```text
 ghcr.io/xgic/payload-cms-dev:latest
