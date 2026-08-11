@@ -1,0 +1,7 @@
+# CODEOWNERS
+* @xgic
+/CODEOWNERS @xgic
+/AGENTS.md @xgic
+/.devcontainer/ @xgic
+/.github/ @xgic
+/README.md @xgic

@@ -1,0 +1,34 @@
+{
+  "name": "XGIC Payload CMS",
+  "image": "ghcr.io/xgic/payload-cms-dev:latest",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteUser": "node",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.npm-intellisense",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "GraphQL.vscode-graphql",
+        "ms-vscode.vscode-typescript-next",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "streetsidesoftware.code-spell-checker",
+        "usernamehw.errorlens"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
+    }
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Payload / Next.js",
+      "onAutoForward": "notify"
+    }
+  },
+  "postStartCommand": "xgic --version || true"
+}

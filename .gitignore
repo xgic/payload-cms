@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / agent local
+.vscode/*
+!.vscode/extensions.json
+.xgic/
+*.swp
+*~
+
+# Node / Payload (when generated in workspace)
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
