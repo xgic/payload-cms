@@ -48,7 +48,12 @@ CLI brand: **XGIC CLI** (`xgic`) only — see [ADR-0005](https://github.com/xgic
 ghcr.io/xgic/payload-cms-dev:latest
 ```
 
-Prefer a **semver pin** for production-like reproducibility once tags are published. Until the first GHCR release is available, use the producer repository’s local Dev Container build path documented in [payload-cms-dev](https://github.com/xgic/payload-cms-dev).
+| Tag style | When to use |
+|-----------|-------------|
+| `:latest` / `:main` | Day-to-day template development (tracks producer `main` publish) |
+| `:X.Y.Z` (semver) | Reproducible app work after a producer release tag |
+
+If the image is not yet pullable, open the **producer** and build via its Dev Container compose path: [payload-cms-dev](https://github.com/xgic/payload-cms-dev).
 
 ## Multi-repo standards
 
