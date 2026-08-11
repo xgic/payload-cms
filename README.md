@@ -4,7 +4,7 @@
 [![Payload CMS](https://img.shields.io/badge/Payload%20CMS-3.x+-000000?logo=payloadcms&logoColor=white)](https://payloadcms.com)
 
 > **Official XGIC end-user template** — thin VS Code Dev Container consumer of the published image  
-> [`ghcr.io/xgic/payload-cms-dev`](https://github.com/xgic/payload-cms-dev/pkgs/container/payload-cms-dev).
+> [`ghcr.io/xgic/payload-cms-dev`](https://github.com/users/xgic/packages/container/package/payload-cms-dev).
 
 This repository is the **application-facing** template ([ADR-0001](https://github.com/xgic/ai/blob/main/docs/adr/0001-xgic-gitlab-architecture-and-repository-naming.md) clean template).  
 Image build, Dockerfile, and producer CI live in **[xgic/payload-cms-dev](https://github.com/xgic/payload-cms-dev)**.
@@ -42,7 +42,7 @@ CLI brand: **XGIC CLI** (`xgic`) only — see [ADR-0005](https://github.com/xgic
 
 ## Image pin
 
-`.devcontainer/devcontainer.json` references:
+`.devcontainer/devcontainer.json` currently tracks:
 
 ```text
 ghcr.io/xgic/payload-cms-dev:latest
@@ -51,9 +51,15 @@ ghcr.io/xgic/payload-cms-dev:latest
 | Tag style | When to use |
 |-----------|-------------|
 | `:latest` / `:main` | Day-to-day template development (tracks producer `main` publish) |
-| `:X.Y.Z` (semver) | Reproducible app work after a producer release tag |
+| `:0.3.0` (semver) | Reproducible app work (producer release [v0.3.0](https://github.com/xgic/payload-cms-dev/releases/tag/v0.3.0)) |
 
-If the image is not yet pullable, open the **producer** and build via its Dev Container compose path: [payload-cms-dev](https://github.com/xgic/payload-cms-dev).
+```bash
+docker pull ghcr.io/xgic/payload-cms-dev:0.3.0
+```
+
+To pin the template to a release, set the `image` field in `.devcontainer/devcontainer.json` to `ghcr.io/xgic/payload-cms-dev:0.3.0`.
+
+If the image is not pullable, open the **producer** and build via its Dev Container compose path: [payload-cms-dev](https://github.com/xgic/payload-cms-dev).
 
 ## Multi-repo standards
 
