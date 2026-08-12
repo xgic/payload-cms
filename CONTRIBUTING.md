@@ -23,3 +23,8 @@ This repo is a **thin template**. Prefer:
 
 No private hosts, paths, tracker IDs, or secrets in issues/PRs.  
 Gate: https://github.com/xgic/ai/blob/main/docs/BASE-STANDARDS-FOR-ORCHESTRATED-REPOS.md
+
+## Maintainer notes
+
+- [docs/repository-settings.md](docs/repository-settings.md) — branch protection and CI gates
+- [README standards (hub)](https://github.com/xgic/ai/blob/main/docs/readme-standards.md)
