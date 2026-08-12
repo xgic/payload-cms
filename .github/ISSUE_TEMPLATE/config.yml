@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contributing guidelines
+    url: https://github.com/xgic/payload-cms/blob/main/CONTRIBUTING.md
+    about: Read contribution guidelines before opening an issue.
+  - name: Multi-repo standards
+    url: https://github.com/xgic/ai
+    about: XGIC public multi-repo standards hub.
+  - name: Image / producer issues
+    url: https://github.com/xgic/payload-cms-dev/issues
+    about: Dockerfile, GHCR, and producer Dev Container problems belong here.
