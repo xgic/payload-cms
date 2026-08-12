@@ -3,30 +3,58 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Payload CMS](https://img.shields.io/badge/Payload%20CMS-3.x+-000000?logo=payloadcms&logoColor=white)](https://payloadcms.com)
 [![Dev Containers](https://img.shields.io/badge/Dev_Containers-ready-blue?logo=visualstudiocode)](https://containers.dev/)
-[![GHCR](https://img.shields.io/badge/image-payload--cms--dev-blue?logo=github)](https://github.com/users/xgic/packages/container/package/payload-cms-dev)
+[![Producer release](https://img.shields.io/github/v/release/xgic/payload-cms-dev?label=payload-cms-dev&logo=github)](https://github.com/xgic/payload-cms-dev/releases)
+[![GHCR image](https://img.shields.io/badge/GHCR-payload--cms--dev-blue?logo=github)](https://github.com/users/xgic/packages/container/package/payload-cms-dev)
 [![Use this template](https://img.shields.io/badge/GitHub-Use_this_template-24292f?logo=github)](https://github.com/xgic/payload-cms/generate)
 
-**The recommended way to start a Payload CMS application with XGIC.**
+## The optimal way to start Payload CMS projects
 
-This repository is a **thin end-user Dev Container template**. It does **not** build a Docker image. It pulls a professionally maintained, multi-arch environment from:
+**For humans and AI coding assistants.**
+
+This repository is XGIC’s **recommended starting point** for new [Payload CMS](https://payloadcms.com) applications. It gives you a **reproducible Dev Container**, a **pinned multi-arch environment image**, and a **single CLI brand**—so people and agents share the same, documented operations instead of fighting host toolchains and ad-hoc scripts.
+
+| You want… | You get… |
+|-----------|----------|
+| A clean app repository on day one | **Use this template** → your product remote, not a fork of image-build history |
+| Minutes to a working workspace | Pull `ghcr.io/xgic/payload-cms-dev` · **Reopen in Container** · run `xgic` |
+| The same path for AI and humans | Modular **XGIC CLI** (`xgic` / `xgic payload …`) + [AGENTS.md](AGENTS.md) |
+| Long-horizon maintainability | Image evolution in the producer; app code stays thin and focused |
 
 ```text
 ghcr.io/xgic/payload-cms-dev:0.3.0
 ```
 
-…so you can open VS Code, **Reopen in Container**, and work with **Payload CMS**, **PostgreSQL tooling**, and the modular **XGIC CLI** (`xgic`) in minutes—whether you are a human developer or an AI coding assistant.
+Image producer and CI: **[xgic/payload-cms-dev](https://github.com/xgic/payload-cms-dev)** · Multi-repo standards: **[xgic/ai](https://github.com/xgic/ai)**
 
-Standards: [xgic/ai](https://github.com/xgic/ai) · Naming: [ADR-0001](https://github.com/xgic/ai/blob/main/docs/adr/0001-xgic-gitlab-architecture-and-repository-naming.md) · CLI: [ADR-0005](https://github.com/xgic/ai/blob/main/docs/adr/0005-modular-xgic-cli-and-retirement-of-xde.md)
+---
+
+## Quick start
+
+Minimal path (details below):
+
+1. **[Use this template](https://github.com/xgic/payload-cms/generate)** → create and clone **your** repository.  
+2. Open the folder in **VS Code** → **Dev Containers: Reopen in Container**.  
+3. In the container terminal:
+
+```bash
+xgic --version
+xgic check
+xgic up --profile postgres   # when your stack needs Compose Postgres
+xgic payload env
+xgic payload dev
+```
+
+**Full walkthrough (all options, troubleshooting, AI prompts):** [Step-by-step: start a project](#step-by-step-start-a-payload-cms-project-with-this-template)
 
 ---
 
 ## Vision
 
-Modern CMS work fails more often from **environment drift** than from product ideas. Teams reinstall Node toolchains, disagree on database versions, and paste brittle shell scripts into AI chats. XGIC’s approach is different:
+Modern CMS work fails more often from **environment drift** than from product ideas. Teams reinstall Node toolchains, disagree on database versions, and paste brittle shell recipes into AI chats. XGIC’s approach is different:
 
-1. **One published environment** — versioned on GHCR, reviewed and CI-gated in the producer repo.  
+1. **One published environment** — versioned on GHCR, reviewed and CI-gated in the producer repository.  
 2. **One thin template** — this repository: app-focused extensions and a pinned image.  
-3. **One CLI brand** — **XGIC CLI** (`xgic` / `xgic payload …`) for lifecycle and Payload operations, designed for **humans and agents**.  
+3. **One CLI brand** — **XGIC CLI** for lifecycle and Payload operations, designed for **humans and agents**.  
 
 The result is a professional, open-source path to **reproducible Payload CMS development**: pull an image, open a container, run a small set of documented commands.
 
@@ -41,33 +69,6 @@ The result is a professional, open-source path to **reproducible Payload CMS dev
 | **AI-operable** | Stable command surface in [AGENTS.md](AGENTS.md); agents use `xgic` instead of inventing scripts |
 | **Clear ownership** | App code lives in *your* repo; image improvements land in [payload-cms-dev](https://github.com/xgic/payload-cms-dev); CLI logic in modular packages |
 | **Open-source rigor** | Apache-2.0, CODEOWNERS, public-safe docs, human-reviewed PRs |
-
----
-
-## Dual-repo architecture
-
-| Repository | Role |
-|------------|------|
-| [xgic/payload-cms-dev](https://github.com/xgic/payload-cms-dev) | **Producer** (`*-dev`): Dockerfile, Compose, CI, publishes `ghcr.io/xgic/payload-cms-dev` |
-| **This repo** — [xgic/payload-cms](https://github.com/xgic/payload-cms) | **Template**: thin `devcontainer.json`, app-focused VS Code extensions, docs for application teams |
-
-| CLI package | Role |
-|-------------|------|
-| [xgic/cli](https://github.com/xgic/cli) | Thin core + `xgic` entrypoint |
-| [xgic/dev-cli](https://github.com/xgic/dev-cli) | Compose lifecycle: `xgic up` / `down` / `check` / … |
-| [xgic/payload-cms-cli](https://github.com/xgic/payload-cms-cli) | Product commands: `xgic payload …` |
-
-```text
-You (human or AI)
-    │
-    ▼
-xgic/payload-cms  ──image:──►  ghcr.io/xgic/payload-cms-dev
-    │                                    ▲
-    │                                    │ builds / publishes
-    │                           xgic/payload-cms-dev
-    │
-    └── inside container: xgic · xgic payload · pnpm · node · db clients
-```
 
 ---
 
@@ -192,7 +193,7 @@ docker pull ghcr.io/xgic/payload-cms-dev:0.3.0
 
 To change the pin, edit the `image` field in `.devcontainer/devcontainer.json`, commit, and reopen/rebuild the container.
 
-If a tag is missing, check [producer releases](https://github.com/xgic/payload-cms-dev/releases) or build/run from [payload-cms-dev](https://github.com/xgic/payload-cms-dev) while contributing to the image.
+If a tag is missing, check [producer releases](https://github.com/xgic/payload-cms-dev/releases) or contribute to the image in [payload-cms-dev](https://github.com/xgic/payload-cms-dev).
 
 ---
 
@@ -210,7 +211,7 @@ The image installs modular **XGIC CLI** packages. Living docs use the **`xgic` b
 | Logs / shell | `xgic logs` · `xgic shell` |
 | Payload env status | `xgic payload env` |
 | Regenerate local env secrets | `xgic payload env --regenerate --yes` |
-| Ensure project scaffold | `xgic payload setup` |
+| Ensure project scaffold | `xgic payload setup` (often automatic; see producer postStart when using the image) |
 | **Daily app start** | **`xgic payload dev`** |
 | Schema helper | `xgic payload schema` |
 | Reset project + DB volume | `xgic payload reset --dry-run` then `--yes` |
@@ -266,6 +267,52 @@ Publishing policy for those packages: [python-package-release.md](https://github
 
 ---
 
+## Architecture
+
+This template is the **application-facing** entry in XGIC’s dual-repo Dev Container model: a thin consumer of a published image—not an image builder.
+
+```text
+You (human or AI)
+    │
+    ▼
+xgic/payload-cms  ──image:──►  ghcr.io/xgic/payload-cms-dev
+    │                                    ▲
+    │                                    │ builds / publishes
+    │                           xgic/payload-cms-dev
+    │
+    └── inside container: xgic · xgic payload · pnpm · node · db clients
+```
+
+| Repository | Role |
+|------------|------|
+| [xgic/payload-cms-dev](https://github.com/xgic/payload-cms-dev) | **Producer** (`*-dev`): Dockerfile, Compose, CI, publishes `ghcr.io/xgic/payload-cms-dev` |
+| **This repo** — [xgic/payload-cms](https://github.com/xgic/payload-cms) | **Template**: thin `devcontainer.json`, app-focused extensions, docs for application teams |
+
+| CLI package | Role |
+|-------------|------|
+| [xgic/cli](https://github.com/xgic/cli) | Thin core + `xgic` entrypoint |
+| [xgic/dev-cli](https://github.com/xgic/dev-cli) | Compose lifecycle: `xgic up` / `down` / `check` / … |
+| [xgic/payload-cms-cli](https://github.com/xgic/payload-cms-cli) | Product commands: `xgic payload …` |
+
+---
+
+## XGIC standards
+
+Portfolio rules that govern this project (and how it relates to the producer and CLI modules):
+
+| Topic | Document |
+|-------|----------|
+| Dual-repo naming (`*-dev` producer vs clean template) | [ADR-0001](https://github.com/xgic/ai/blob/main/docs/adr/0001-xgic-gitlab-architecture-and-repository-naming.md) |
+| Modular XGIC CLI; no supported dual brand | [ADR-0005](https://github.com/xgic/ai/blob/main/docs/adr/0005-modular-xgic-cli-and-retirement-of-xde.md) |
+| Public-safe docs, PR process, quality attributes | [BASE-STANDARDS](https://github.com/xgic/ai/blob/main/docs/BASE-STANDARDS-FOR-ORCHESTRATED-REPOS.md) |
+| Component catalog | [Ecosystem catalog](https://github.com/xgic/ai/blob/main/docs/ecosystem/catalog.md) |
+| Community health (CODEOWNERS, security norms) | [Community health](https://github.com/xgic/ai/blob/main/docs/community-health.md) |
+| Agent instructions for this template | [AGENTS.md](AGENTS.md) |
+
+Hub home: [https://github.com/xgic/ai](https://github.com/xgic/ai)
+
+---
+
 ## App-focused VS Code extensions
 
 This template installs a **minimal, domain-focused** set (Payload / TypeScript / GraphQL / data)—not the full producer infra set:
@@ -280,7 +327,7 @@ This template installs a **minimal, domain-focused** set (Payload / TypeScript /
 | SQLTools + PostgreSQL driver | Database exploration |
 | Code Spell Checker / ErrorLens | Clarity while coding |
 
-Docker-heavy tooling lives primarily on the **producer** image for contributors who edit Dockerfiles—see [payload-cms-dev](https://github.com/xgic/payload-cms-dev).
+Docker-heavy tooling lives primarily on the **producer** for contributors who edit Dockerfiles—see [payload-cms-dev](https://github.com/xgic/payload-cms-dev).
 
 ---
 
@@ -308,15 +355,6 @@ Improvements to **template docs**, **image pin**, or **app-focused extensions** 
 1. Branch from `main`, Conventional Commits, **labels required**.  
 2. PR with human UI review (agents draft; humans merge).  
 3. See [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md).
-
----
-
-## Multi-repo standards
-
-- [xgic/ai](https://github.com/xgic/ai) — portfolio standards hub  
-- [BASE-STANDARDS](https://github.com/xgic/ai/blob/main/docs/BASE-STANDARDS-FOR-ORCHESTRATED-REPOS.md) — public-safe process and quality attributes  
-- [Community health](https://github.com/xgic/ai/blob/main/docs/community-health.md)  
-- [Ecosystem catalog](https://github.com/xgic/ai/blob/main/docs/ecosystem/catalog.md)  
 
 ---
 
