@@ -3,6 +3,12 @@
   "image": "ghcr.io/xgic/payload-cms-dev:0.3.0",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "node",
+  // Lifecycle: prefer explicit XGIC CLI (no host initializeCommand).
+  // First run inside the container:
+  //   xgic payload env --regenerate --yes   # if .devcontainer/.env is missing
+  //   xgic payload setup
+  //   xgic up --profile postgres            # when using Compose DB sidecars
+  //   xgic payload dev
   "customizations": {
     "vscode": {
       "extensions": [
@@ -29,6 +35,5 @@
       "label": "Payload / Next.js",
       "onAutoForward": "notify"
     }
-  },
-  "postStartCommand": "xgic --version || true"
+  }
 }

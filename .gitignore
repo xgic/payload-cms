@@ -17,6 +17,14 @@ build/
 .env
 .env.*
 !.env.example
+.devcontainer/.env
+**/.env
+**/.env.*
+!**/.env.example
+
+# Generated Payload app folder (name comes from create-payload-config.json)
+# Consumers commit their app; template default name is my-payload-cms for local smoke only.
+my-payload-cms/
 
 # Python
 .venv/
