@@ -37,11 +37,8 @@ Minimal path (details below):
 3. In the container terminal:
 
 ```bash
-xgic --version
-xgic check
-xgic up --profile postgres   # when your stack needs Compose Postgres
-xgic payload env
-xgic payload dev
+xgic payload setup   # first session: env + DB + scaffold (idempotent)
+xgic payload dev     # daily: ensures DB and starts the app
 ```
 
 **Full walkthrough (all options, troubleshooting, AI prompts):** [Step-by-step: start a project](#step-by-step-start-a-payload-cms-project-with-this-template)
@@ -131,26 +128,20 @@ This template ships configuration for `xgic payload` under `.devcontainer/`:
 In the integrated terminal **inside** the container:
 
 ```bash
-xgic --version
-xgic check
-
-# Create .devcontainer/.env with fresh local credentials (required once)
-xgic payload env --regenerate --yes
-xgic payload env
-
-# Scaffold the Payload app at repo root (non-silent; fails loudly)
+# First session only — one command:
+# - creates .devcontainer/.env when missing
+# - starts the DB Compose profile (postgres/mongodb from config)
+# - scaffolds the Payload app (app-root for this template)
 xgic payload setup
 ```
 
-You should see modular XGIC CLI output and a successful project create (or a clear error). Setup is **not** auto-run on container start.
+You should see modular XGIC CLI output and a successful project create (or a clear error). Setup is **not** auto-run on container start.  
+Optional diagnostics: `xgic check` · `xgic payload env`. Credential **rotation** only: `xgic payload env --regenerate --yes`.
 
 #### 5. Start Payload development
 
 ```bash
-# Bring up Compose DB sidecars when using postgres/mongodb profiles:
-xgic up --profile postgres
-
-# Primary daily command — smart start for the Payload app
+# Daily command — ensures DB and runs the app
 xgic payload dev
 ```
 
