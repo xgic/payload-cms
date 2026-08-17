@@ -1,6 +1,6 @@
 {
   "name": "XGIC Payload CMS",
-  "image": "ghcr.io/xgic/payload-cms-dev:0.3.1",
+  "image": "ghcr.io/xgic/payload-cms-dev:0.3.2",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "node",
   "customizations": {
