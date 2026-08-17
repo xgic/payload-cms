@@ -29,6 +29,5 @@
       "label": "Payload / Next.js",
       "onAutoForward": "notify"
     }
-  },
-  "postStartCommand": "xgic --version || true"
+  }
 }

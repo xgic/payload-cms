@@ -116,22 +116,38 @@ When prompted, choose **Reopen in Container**, or run:
 
 VS Code will **pull** `ghcr.io/xgic/payload-cms-dev:0.3.0` (first pull may take several minutes).
 
-#### 4. Verify the environment (first session)
+#### 4. Configure and scaffold (first session — explicit CLI)
+
+This template ships configuration for `xgic payload` under `.devcontainer/`:
+
+| File | Role |
+|------|------|
+| `create-payload-config.json` | `layout: app-root`, `projectDir: "."`, template, DB adapter |
+| `create-payload-config.schema.json` | IntelliSense / validation |
+| `docker-compose.yml` | Local Compose shape (DB profiles + optional app service image) |
+
+**Layout:** this template scaffolds the Payload + Next.js app at the **repository root** (Payload/Next.js best practice). The image producer repo uses a gitignored `app/` directory instead — do not copy that pattern here.
 
 In the integrated terminal **inside** the container:
 
 ```bash
 xgic --version
 xgic check
+
+# Create .devcontainer/.env with fresh local credentials (required once)
+xgic payload env --regenerate --yes
 xgic payload env
+
+# Scaffold the Payload app at repo root (non-silent; fails loudly)
+xgic payload setup
 ```
 
-You should see modular XGIC CLI output and environment/status information without installing Node or CLI packages on the host.
+You should see modular XGIC CLI output and a successful project create (or a clear error). Setup is **not** auto-run on container start.
 
 #### 5. Start Payload development
 
 ```bash
-# If your workflow needs Compose profiles (e.g. Postgres), bring services up first:
+# Bring up Compose DB sidecars when using postgres/mongodb profiles:
 xgic up --profile postgres
 
 # Primary daily command — smart start for the Payload app
@@ -144,7 +160,8 @@ Open the app URL reported by the process (commonly port **3000**; this template 
 
 - Commit **your** Payload application code to **your** repository.  
 - Keep this template’s Dev Container pin intentional (see [Image pins](#image-pins)).  
-- Open PRs with human review before merging to your default branch.
+- Open PRs with human review before merging to your default branch.  
+- Do **not** commit production secrets, private hosts, or deploy credentials in this public template.
 
 ---
 
@@ -211,7 +228,7 @@ The image installs modular **XGIC CLI** packages. Living docs use the **`xgic` b
 | Logs / shell | `xgic logs` · `xgic shell` |
 | Payload env status | `xgic payload env` |
 | Regenerate local env secrets | `xgic payload env --regenerate --yes` |
-| Ensure project scaffold | `xgic payload setup` (often automatic; see producer postStart when using the image) |
+| Ensure project scaffold | `xgic payload setup` (**explicit**; uses `.devcontainer/create-payload-config.json`) |
 | **Daily app start** | **`xgic payload dev`** |
 | Schema helper | `xgic payload schema` |
 | Reset project + DB volume | `xgic payload reset --dry-run` then `--yes` |

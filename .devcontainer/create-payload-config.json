@@ -1,0 +1,15 @@
+{
+  "$schema": "./create-payload-config.schema.json",
+  "projectName": "my-payload-cms",
+  "projectDir": ".",
+  "layout": "app-root",
+  "template": "website",
+  "example": null,
+  "agent": "none",
+  "dbAdapter": "postgres",
+  "dbName": "payload_db",
+  "dbUser": "payload",
+  "dbUri": "",
+  "adminEmail": "admin@example.com",
+  "telemetry": false
+}

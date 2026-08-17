@@ -17,9 +17,21 @@ build/
 .env
 .env.*
 !.env.example
+.devcontainer/.env
+**/.env
+**/.env.*
+!**/.env.example
+
+# App-root layout: after `xgic payload setup`, commit Payload/Next files at repo root.
+# Optional legacy nested smoke dirs (if someone uses layout subdir locally):
+/app/
+/my-payload-cms/
 
 # Python
 .venv/
 __pycache__/
 .pytest_cache/
 .ruff_cache/
+
+tmp/
+
