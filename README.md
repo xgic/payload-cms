@@ -65,7 +65,7 @@ The result is a professional, open-source path to **reproducible Payload CMS dev
 | Benefit | Detail |
 |---------|--------|
 | **Fastest path to a working workspace** | Pre-built image; no multi-stage Dockerfile rebuild in every app repo |
-| **Reproducible pins** | Semver image tags (e.g. `0.3.0`) match producer releases |
+| **Reproducible pins** | Semver image tags (e.g. `0.3.1`) match producer releases |
 | **AI-operable** | Stable command surface in [AGENTS.md](AGENTS.md); agents use `xgic` instead of inventing scripts |
 | **Clear ownership** | App code lives in *your* repo; image improvements land in [payload-cms-dev](https://github.com/xgic/payload-cms-dev); CLI logic in modular packages |
 | **Open-source rigor** | Apache-2.0, CODEOWNERS, public-safe docs, human-reviewed PRs |
