@@ -21,7 +21,7 @@ This repository is XGIC’s **recommended starting point** for new [Payload CMS]
 | Long-horizon maintainability | Image evolution in the producer; app code stays thin and focused |
 
 ```text
-ghcr.io/xgic/payload-cms-dev:0.3.0
+ghcr.io/xgic/payload-cms-dev:0.3.1
 ```
 
 Image producer and CI: **[xgic/payload-cms-dev](https://github.com/xgic/payload-cms-dev)** · Multi-repo standards: **[xgic/ai](https://github.com/xgic/ai)**
@@ -65,7 +65,7 @@ The result is a professional, open-source path to **reproducible Payload CMS dev
 | Benefit | Detail |
 |---------|--------|
 | **Fastest path to a working workspace** | Pre-built image; no multi-stage Dockerfile rebuild in every app repo |
-| **Reproducible pins** | Semver image tags (e.g. `0.3.0`) match producer releases |
+| **Reproducible pins** | Semver image tags (e.g. `0.3.1`) match producer releases |
 | **AI-operable** | Stable command surface in [AGENTS.md](AGENTS.md); agents use `xgic` instead of inventing scripts |
 | **Clear ownership** | App code lives in *your* repo; image improvements land in [payload-cms-dev](https://github.com/xgic/payload-cms-dev); CLI logic in modular packages |
 | **Open-source rigor** | Apache-2.0, CODEOWNERS, public-safe docs, human-reviewed PRs |
@@ -114,7 +114,7 @@ When prompted, choose **Reopen in Container**, or run:
 **Dev Containers: Reopen in Container** from the Command Palette  
 (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> / <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).
 
-VS Code will **pull** `ghcr.io/xgic/payload-cms-dev:0.3.0` (first pull may take several minutes).
+VS Code will **pull** `ghcr.io/xgic/payload-cms-dev:0.3.1` (first pull may take several minutes).
 
 #### 4. Configure and scaffold (first session — explicit CLI)
 
@@ -196,16 +196,16 @@ code .
 `.devcontainer/devcontainer.json` currently pins:
 
 ```text
-ghcr.io/xgic/payload-cms-dev:0.3.0
+ghcr.io/xgic/payload-cms-dev:0.3.1
 ```
 
 | Tag | Use when |
 |-----|----------|
-| `:0.3.0` (semver) | **Default for app work** — matches producer [v0.3.0](https://github.com/xgic/payload-cms-dev/releases/tag/v0.3.0) |
+| `:0.3.1` (semver) | **Default for app work** — matches producer [v0.3.1](https://github.com/xgic/payload-cms-dev/releases/tag/v0.3.1) |
 | `:latest` / `:main` | You deliberately want rolling producer `main` (less reproducible) |
 
 ```bash
-docker pull ghcr.io/xgic/payload-cms-dev:0.3.0
+docker pull ghcr.io/xgic/payload-cms-dev:0.3.1
 ```
 
 To change the pin, edit the `image` field in `.devcontainer/devcontainer.json`, commit, and reopen/rebuild the container.
@@ -352,7 +352,7 @@ Docker-heavy tooling lives primarily on the **producer** for contributors who ed
 
 | Symptom | What to try |
 |---------|-------------|
-| Image pull fails | Confirm Docker is running; `docker pull ghcr.io/xgic/payload-cms-dev:0.3.0`; check [package page](https://github.com/users/xgic/packages/container/package/payload-cms-dev) |
+| Image pull fails | Confirm Docker is running; `docker pull ghcr.io/xgic/payload-cms-dev:0.3.1`; check [package page](https://github.com/users/xgic/packages/container/package/payload-cms-dev) |
 | `xgic: command not found` in a one-off `docker run` | Use a **non-login** shell so image `PATH` is preserved, or open via Dev Containers (recommended) |
 | Need a clean project/DB | `xgic payload reset --dry-run` then `--yes` only after review |
 | Image definition bug | File an issue or PR on [payload-cms-dev](https://github.com/xgic/payload-cms-dev), not only in your app repo |
