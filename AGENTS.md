@@ -21,11 +21,11 @@ This repository is a **thin end-user Dev Container template**.
 
 1. `xgic --help`
 2. `xgic check`
-3. Edit `.devcontainer/create-payload-config.json` if needed (`projectName`, `template`, `dbAdapter`)
+3. Edit `.devcontainer/create-payload-config.json` if needed (`projectName`, `template`, `dbAdapter`; keep `layout: app-root` / `projectDir: "."`)
 4. `xgic payload env --regenerate --yes` when `.devcontainer/.env` is missing
-5. `xgic payload setup` (config-driven; must not silently no-op)
+5. `xgic payload setup` — app-root scaffold (Payload/Next at repo root)
 6. `xgic up --profile postgres` when using Compose Postgres
-7. Daily: `xgic payload dev`
+7. Daily: `xgic payload dev` (requires setup first)
 
 **Do not** reintroduce host `initializeCommand` Bash hooks. Production deploy details never belong in this public repo.
 

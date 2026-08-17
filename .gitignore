@@ -22,12 +22,16 @@ build/
 **/.env.*
 !**/.env.example
 
-# Generated Payload app folder (name comes from create-payload-config.json)
-# Consumers commit their app; template default name is my-payload-cms for local smoke only.
-my-payload-cms/
+# App-root layout: after `xgic payload setup`, commit Payload/Next files at repo root.
+# Optional legacy nested smoke dirs (if someone uses layout subdir locally):
+/app/
+/my-payload-cms/
 
 # Python
 .venv/
 __pycache__/
 .pytest_cache/
 .ruff_cache/
+
+tmp/
+

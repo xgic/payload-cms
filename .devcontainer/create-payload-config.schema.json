@@ -34,16 +34,36 @@
       "type": "string"
     }
   },
-  "description": "Configuration for XGIC Payload CMS project creation via `xgic payload setup`. Controls project name, template, database settings, and optional agent integration. JSON Schema enables VS Code IntelliSense.",
+  "description": "Configuration for XGIC Payload CMS project creation via `xgic payload setup`. Application templates use layout app-root (projectDir '.') so Payload/Next live at the repo root.",
   "properties": {
     "projectName": {
-      "description": "Folder name for the generated Payload project and Docker Compose project name (Compose-safe: start with letter/digit; then [a-z0-9_-], max 63 chars)",
+      "description": "Payload/npm project identity (Compose-safe characters). With layout app-root this is not a subdirectory.",
       "examples": [
-        "website",
-        "my-payload-cms"
+        "my-payload-cms",
+        "website"
       ],
       "pattern": "^[a-z0-9][a-z0-9_-]{0,62}$",
       "title": "Projectname",
+      "type": "string"
+    },
+    "projectDir": {
+      "description": "Relative directory for the generated app. Use '.' for this template (app-root).",
+      "examples": [
+        "."
+      ],
+      "default": ".",
+      "title": "Projectdir",
+      "type": "string"
+    },
+    "layout": {
+      "description": "app-root for pure application repos (this template). subdir/auto used by the image producer.",
+      "enum": [
+        "auto",
+        "app-root",
+        "subdir"
+      ],
+      "default": "app-root",
+      "title": "Layout",
       "type": "string"
     },
     "template": {

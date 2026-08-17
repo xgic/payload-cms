@@ -122,9 +122,11 @@ This template ships configuration for `xgic payload` under `.devcontainer/`:
 
 | File | Role |
 |------|------|
-| `create-payload-config.json` | Project name, template, DB adapter (edit before setup) |
+| `create-payload-config.json` | `layout: app-root`, `projectDir: "."`, template, DB adapter |
 | `create-payload-config.schema.json` | IntelliSense / validation |
 | `docker-compose.yml` | Local Compose shape (DB profiles + optional app service image) |
+
+**Layout:** this template scaffolds the Payload + Next.js app at the **repository root** (Payload/Next.js best practice). The image producer repo uses a gitignored `app/` directory instead — do not copy that pattern here.
 
 In the integrated terminal **inside** the container:
 
@@ -136,7 +138,7 @@ xgic check
 xgic payload env --regenerate --yes
 xgic payload env
 
-# Scaffold the Payload app from create-payload-config.json (non-silent; fails loudly)
+# Scaffold the Payload app at repo root (non-silent; fails loudly)
 xgic payload setup
 ```
 

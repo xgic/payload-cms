@@ -1,6 +1,8 @@
 {
   "$schema": "./create-payload-config.schema.json",
   "projectName": "my-payload-cms",
+  "projectDir": ".",
+  "layout": "app-root",
   "template": "website",
   "example": null,
   "agent": "none",
