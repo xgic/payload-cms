@@ -6,7 +6,7 @@ name: xgic-payload-cms-dev
 
 services:
   xgic-payload-cms-dev:
-    image: ghcr.io/xgic/payload-cms-dev:0.3.1
+    image: ghcr.io/xgic/payload-cms-dev:0.3.2
     command: tail -f /dev/null
     container_name: xgic-payload-cms-dev
     env_file: .env
