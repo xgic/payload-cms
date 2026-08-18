@@ -1,30 +1,29 @@
-# Dev performance (Windows Docker Desktop)
+# Dev performance (bind-mounted workspaces)
 
 ## Symptom
 
 `pnpm install` and the first Payload `/admin` compile can be very slow when the
-workspace is a **Windows path bind-mounted** into Docker Desktop (9p/VirtioFS).
+workspace is **bind-mounted** from the Docker host into the Dev Container and
+that host filesystem has high latency for large Node module graphs.
 `xgic payload dev` may report Ready while Turbopack is still walking the
 module graph.
 
-## Recommended long-term host
+This template supports **Windows and Linux Docker hosts equally**. Named volumes
+below improve DX on either host whenever bind-mount I/O dominates.
 
-Run the project on a **native Linux filesystem** (Linux host, or a dedicated
-development VM with the repo on that VM’s disk). Do not treat a Windows
-bind mount as the production-minded default.
+## Named volumes for the module graph
 
-## Temporary volume bridge (this template)
-
-Until the workspace lives on a native Linux filesystem, Compose mounts Linux
-**named volumes** over the app-root module graph:
+Docker Compose mounts **named volumes** over the app-root module graph so
+Turbopack and package installs use container-native storage while application
+source stays on the workspace bind mount:
 
 | Host-visible path | Container path | Volume |
 |-------------------|----------------|--------|
 | (named volume) | `/workspace/node_modules` | `xgic-payload-cms-dev-node-modules` |
 | (named volume) | `/workspace/.next` | `xgic-payload-cms-dev-next` |
 
-This is intentional and temporary. Ownership of those volumes is corrected
-**only when** the mount is not already owned by uid `1000` (`node`).
+Ownership of those volumes is corrected **only when** the mount is not already
+owned by uid `1000` (`node`).
 
 After you recreate those volumes (or the first time they are empty):
 
@@ -39,7 +38,7 @@ App-root layout means the paths are `/workspace/node_modules` and
 
 | File | Role |
 |------|------|
-| `.devcontainer/.env` | Compose interpolation (`POSTGRES_*`) + container env |
+| `.devcontainer/.env` | Docker Compose interpolation (`POSTGRES_*`) + container env |
 | repo-root `.env` (after setup) | Payload/Next (`DATABASE_URL`, secrets) |
 
 After `xgic payload env --regenerate`, both files must agree, and a Postgres
@@ -52,7 +51,7 @@ Do **not** teach application code to accept both `DATABASE_URI` and
 
 ## Related
 
-- Template Compose-first reopen: [#10](https://github.com/xgic/payload-cms/issues/10)
+- Template Docker Compose-first reopen: [#10](https://github.com/xgic/payload-cms/issues/10)
 - Producer consumer contract: [payload-cms-dev#50](https://github.com/xgic/payload-cms-dev/issues/50)
-- Windows Git `safe.directory` / SSH agent: [#9](https://github.com/xgic/payload-cms/issues/9),
+- Host-conditional Git `safe.directory` / SSH agent: [#9](https://github.com/xgic/payload-cms/issues/9),
   [payload-cms-dev#49](https://github.com/xgic/payload-cms-dev/issues/49)

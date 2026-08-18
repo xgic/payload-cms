@@ -12,7 +12,7 @@ Public operational notes for maintainers of [xgic/payload-cms](https://github.co
 | Pull request required (1 approval) | Human UI review |
 | Linear history | Clean default branch |
 | Required signatures | Verified commits |
-| Required status check **Lint** | JSON + Compose-first contract (no standalone `image`, pin on Compose service) |
+| Required status check **Lint** | JSON + Docker Compose-first contract (no standalone `image`, pin on Docker Compose service) |
 
 Image build status checks live on [payload-cms-dev](https://github.com/xgic/payload-cms-dev) (Lint / Test / Release Validation).
 

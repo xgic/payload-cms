@@ -27,7 +27,7 @@ jobs:
           python -m json.tool .devcontainer/devcontainer.json > /dev/null
           echo "devcontainer.json: OK"
 
-      - name: Require Compose-first Dev Container
+      - name: Require Docker Compose-first Dev Container
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -49,17 +49,17 @@ jobs:
           run_services = data.get("runServices") or []
           if "postgres" not in run_services:
               raise SystemExit("runServices must include postgres so Reopen starts the DB")
-          print("devcontainer.json Compose-first contract: OK")
+          print("devcontainer.json Docker Compose-first contract: OK")
           PY
 
-      - name: Require image pin on Compose service
+      - name: Require image pin on Docker Compose service
         run: |
           set -euo pipefail
           grep -q 'image: ghcr.io/xgic/payload-cms-dev:' .devcontainer/docker-compose.yml
           grep -q 'name: xgic-payload-cms-dev' .devcontainer/docker-compose.yml
-          echo "compose image pin and project name reference producer contract"
+          echo "Docker Compose image pin and project name reference producer contract"
 
-      - name: Validate Compose file
+      - name: Validate Docker Compose file
         env:
           POSTGRES_PASSWORD: ci
         run: |

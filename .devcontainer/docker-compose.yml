@@ -1,4 +1,4 @@
-# Thin-template Dev Container Compose (localhost only).
+# Thin-template Dev Container Docker Compose (localhost only).
 # VS Code attaches via dockerComposeFile + service (not a standalone image container).
 # Default project name: xgic-payload-cms-dev — rename name:, container_name values,
 # volume names, network, XGIC_COMPOSE_PROJECT, and composeProjectName together.
@@ -36,9 +36,8 @@ services:
       - ..:/workspace:cached
       - /var/run/docker.sock:/var/run/docker.sock
       - vscode-srv-ext:/home/node/.vscode-server/extensions
-      # Temporary Windows Docker Desktop bridge: Linux volumes over the app-root
-      # module graph so Next/Turbopack does not walk a 9p bind mount.
-      # Long-term: native Linux filesystem (see docs/dev-performance.md).
+      # Named volumes for node_modules/.next on bind-mounted workspaces
+      # (see docs/dev-performance.md).
       - app-node-modules:/workspace/node_modules
       - app-next:/workspace/.next
     depends_on:

@@ -12,31 +12,31 @@ This repository is a **thin end-user Dev Container template**.
 |---------|----------------|
 | Image / Dockerfile / producer CI | https://github.com/xgic/payload-cms-dev |
 | CLI framework | https://github.com/xgic/cli |
-| Compose lifecycle (`xgic up` / `down` / `check`) | https://github.com/xgic/dev-cli |
+| Docker Compose lifecycle (`xgic up` / `down` / `check`) | https://github.com/xgic/dev-cli |
 | Payload commands (`xgic payload …`) | https://github.com/xgic/payload-cms-cli |
 
 **Do not** add Dockerfile image builds or in-tree CLI packages here.
 
-## Compose-first reopen
+## Docker Compose-first reopen
 
 Supported attach path is **Docker Compose**, not a standalone `image` in `devcontainer.json`.
 
 - `dockerComposeFile`: `.devcontainer/docker-compose.yml`
 - Service: `xgic-payload-cms-dev`
 - Workspace: `/workspace` · `remoteUser`: `node`
-- Image pin: `image: ghcr.io/xgic/payload-cms-dev:0.3.2` on the Compose service
+- Image pin: `image: ghcr.io/xgic/payload-cms-dev:0.3.2` on the Docker Compose service
 - Default project: `name: xgic-payload-cms-dev` plus env `XGIC_COMPOSE_PROJECT` / `XGIC_COMPOSE_FILE` / `XGIC_PRIMARY_SERVICE`
 - Postgres starts with Reopen (`runServices` + `depends_on` health). Mongo remains `--profile mongodb`.
 
-Consumers who fork or rename must update Compose `name:`, container/volume/network names, the `XGIC_*` env, and `composeProjectName` together.
+Consumers who fork or rename must update Docker Compose `name:`, container/volume/network names, the `XGIC_*` env, and `composeProjectName` together.
 
-Standalone `image` reopen produces random names (e.g. `boring_*`) and detaches the DB from the IDE project. Rebuild once if a workspace is still on that anti-pattern.
+Standalone `image` reopen produces non-deterministic container names (Docker’s default `adjective_noun` style) and detaches the DB from the IDE project. Rebuild once if a workspace is still on that anti-pattern.
 
 ## Session startup (inside container)
 
 1. `xgic --help`
 2. `xgic check`
-3. Edit `.devcontainer/create-payload-config.json` if needed (`projectName`, `template`, `dbAdapter`; keep `layout: app-root` / `projectDir: "."`; keep `composeProjectName` aligned with Compose `name:`)
+3. Edit `.devcontainer/create-payload-config.json` if needed (`projectName`, `template`, `dbAdapter`; keep `layout: app-root` / `projectDir: "."`; keep `composeProjectName` aligned with Docker Compose `name:`)
 4. `xgic payload env --regenerate --yes` when `.devcontainer/.env` is missing
 5. `xgic payload setup` — app-root scaffold (Payload/Next at repo root)
 6. After named-volume recreate: `pnpm install` (see [docs/dev-performance.md](docs/dev-performance.md))
