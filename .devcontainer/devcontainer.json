@@ -1,7 +1,9 @@
 {
   "name": "XGIC Payload CMS",
-  "image": "ghcr.io/xgic/payload-cms-dev:0.3.2",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "xgic-payload-cms-dev",
+  "runServices": ["xgic-payload-cms-dev", "postgres"],
+  "workspaceFolder": "/workspace",
   "remoteUser": "node",
   "customizations": {
     "vscode": {

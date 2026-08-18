@@ -17,17 +17,34 @@ This repository is a **thin end-user Dev Container template**.
 
 **Do not** add Dockerfile image builds or in-tree CLI packages here.
 
+## Compose-first reopen
+
+Supported attach path is **Docker Compose**, not a standalone `image` in `devcontainer.json`.
+
+- `dockerComposeFile`: `.devcontainer/docker-compose.yml`
+- Service: `xgic-payload-cms-dev`
+- Workspace: `/workspace` · `remoteUser`: `node`
+- Image pin: `image: ghcr.io/xgic/payload-cms-dev:0.3.2` on the Compose service
+- Default project: `name: xgic-payload-cms-dev` plus env `XGIC_COMPOSE_PROJECT` / `XGIC_COMPOSE_FILE` / `XGIC_PRIMARY_SERVICE`
+- Postgres starts with Reopen (`runServices` + `depends_on` health). Mongo remains `--profile mongodb`.
+
+Consumers who fork or rename must update Compose `name:`, container/volume/network names, the `XGIC_*` env, and `composeProjectName` together.
+
+Standalone `image` reopen produces random names (e.g. `boring_*`) and detaches the DB from the IDE project. Rebuild once if a workspace is still on that anti-pattern.
+
 ## Session startup (inside container)
 
 1. `xgic --help`
 2. `xgic check`
-3. Edit `.devcontainer/create-payload-config.json` if needed (`projectName`, `template`, `dbAdapter`; keep `layout: app-root` / `projectDir: "."`)
+3. Edit `.devcontainer/create-payload-config.json` if needed (`projectName`, `template`, `dbAdapter`; keep `layout: app-root` / `projectDir: "."`; keep `composeProjectName` aligned with Compose `name:`)
 4. `xgic payload env --regenerate --yes` when `.devcontainer/.env` is missing
 5. `xgic payload setup` — app-root scaffold (Payload/Next at repo root)
-6. `xgic up --profile postgres` when using Compose Postgres
+6. After named-volume recreate: `pnpm install` (see [docs/dev-performance.md](docs/dev-performance.md))
 7. Daily: `xgic payload dev` (requires setup first)
 
-**Do not** reintroduce host `initializeCommand` Bash hooks. Production deploy details never belong in this public repo.
+**Do not** reintroduce host `initializeCommand` Bash hooks or a `postStartCommand` for Git `safe.directory` (tracked in [#9](https://github.com/xgic/payload-cms/issues/9) / [payload-cms-dev#49](https://github.com/xgic/payload-cms-dev/issues/49)). Production deploy details never belong in this public repo.
+
+Do **not** dual-support `DATABASE_URI` in app code. Credential regenerate / `DATABASE_URL` sync is [payload-cms-cli#26](https://github.com/xgic/payload-cms-cli/issues/26). Producer contract: [payload-cms-dev#50](https://github.com/xgic/payload-cms-dev/issues/50). This reopen fix: [#10](https://github.com/xgic/payload-cms/issues/10).
 
 ## Rules
 

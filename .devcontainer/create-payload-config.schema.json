@@ -66,6 +66,16 @@
       "title": "Layout",
       "type": "string"
     },
+    "composeProjectName": {
+      "description": "Docker Compose project name. Must match top-level compose name:, XGIC_COMPOSE_PROJECT, and related container/volume/network names. Consumers who fork or rename should update all of these together.",
+      "examples": [
+        "xgic-payload-cms-dev",
+        "my-payload-app-dev"
+      ],
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,62}$",
+      "title": "Composeprojectname",
+      "type": "string"
+    },
     "template": {
       "allOf": [
         {

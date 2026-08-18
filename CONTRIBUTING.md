@@ -10,7 +10,7 @@ This repo is a **thin template**. Prefer:
 |-------------|-------------------|
 | Dev Container image / Dockerfile / compose producer | [payload-cms-dev](https://github.com/xgic/payload-cms-dev) |
 | CLI commands / libraries | [cli](https://github.com/xgic/cli), [dev-cli](https://github.com/xgic/dev-cli), [payload-cms-cli](https://github.com/xgic/payload-cms-cli) |
-| Template `devcontainer.json`, app extensions, template docs | **this repo** |
+| Template Compose-first `devcontainer.json` / `.devcontainer/docker-compose.yml`, app extensions, template docs | **this repo** |
 
 ## Process
 

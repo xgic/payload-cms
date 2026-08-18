@@ -3,6 +3,7 @@
   "projectName": "my-payload-cms",
   "projectDir": ".",
   "layout": "app-root",
+  "composeProjectName": "xgic-payload-cms-dev",
   "template": "website",
   "example": null,
   "agent": "none",

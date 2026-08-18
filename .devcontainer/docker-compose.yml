@@ -1,15 +1,33 @@
-# Consumer Compose for the thin payload-cms template.
-# - Dev Containers: reopen uses the pinned `image` in devcontainer.json (pull-only).
-# - CLI / CI / ephemeral staging: `xgic up --profile postgres` (or mongodb) starts DB sidecars.
-# - No production hosts, secrets, or deploy targets — generic local shape only.
+# Thin-template Dev Container Compose (localhost only).
+# VS Code attaches via dockerComposeFile + service (not a standalone image container).
+# Default project name: xgic-payload-cms-dev — rename name:, container_name values,
+# volume names, network, XGIC_COMPOSE_PROJECT, and composeProjectName together.
 name: xgic-payload-cms-dev
 
 services:
+  # Primary Dev Container service (VS Code "service" target).
+  # Keep the service key as xgic-payload-cms-dev for modular XGIC CLI defaults.
   xgic-payload-cms-dev:
     image: ghcr.io/xgic/payload-cms-dev:0.3.2
-    command: tail -f /dev/null
+    # Named volumes are created as root; chown only when ownership is wrong (uid != 1000).
+    command:
+      - sh
+      - -c
+      - |
+        for d in /workspace/node_modules /workspace/.next; do
+          if [ -d "$$d" ] && [ "$$(stat -c %u "$$d" 2>/dev/null)" != "1000" ]; then
+            chown -R 1000:1000 "$$d" || true
+          fi
+        done
+        exec tail -f /dev/null
     container_name: xgic-payload-cms-dev
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      XGIC_COMPOSE_PROJECT: xgic-payload-cms-dev
+      XGIC_COMPOSE_FILE: .devcontainer/docker-compose.yml
+      XGIC_PRIMARY_SERVICE: xgic-payload-cms-dev
     networks:
       - app-network
     ports:
@@ -18,17 +36,36 @@ services:
       - ..:/workspace:cached
       - /var/run/docker.sock:/var/run/docker.sock
       - vscode-srv-ext:/home/node/.vscode-server/extensions
+      # Temporary Windows Docker Desktop bridge: Linux volumes over the app-root
+      # module graph so Next/Turbopack does not walk a 9p bind mount.
+      # Long-term: native Linux filesystem (see docs/dev-performance.md).
+      - app-node-modules:/workspace/node_modules
+      - app-next:/workspace/.next
+    depends_on:
+      postgres:
+        condition: service_healthy
+    stop_grace_period: 5s
 
+  # Always-on for the default template path (postgres adapter).
+  # Mongo stays profiled for the optional CLI switch (`--profile mongodb`).
+  # Only POSTGRES_* — do not env_file app secrets onto this service.
   postgres:
     container_name: xgic-payload-cms-dev-postgres
-    env_file: .env
     image: postgres:18.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-payload}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-payload}
+      POSTGRES_DB: ${POSTGRES_DB:-payload_db}
     networks:
       - app-network
-    profiles:
-      - postgres
     volumes:
       - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 10s
 
   mongodb:
     container_name: xgic-payload-cms-dev-mongodb
@@ -47,6 +84,10 @@ volumes:
     name: xgic-payload-cms-dev-mongodb-data
   vscode-srv-ext:
     name: xgic-payload-cms-dev-vscode-srv-ext
+  app-node-modules:
+    name: xgic-payload-cms-dev-node-modules
+  app-next:
+    name: xgic-payload-cms-dev-next
 
 networks:
   app-network:
