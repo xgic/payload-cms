@@ -1,8 +1,5 @@
 {
   "name": "XGIC Payload CMS",
-  // Docker Compose attach (not standalone image:). Git DX runs once from the
-  // Compose primary command — no initializeCommand / postAttach / postStart /
-  // postCreate hooks. Prefer HTTPS + VS Code host credential helper.
   "dockerComposeFile": "./docker-compose.yml",
   "service": "xgic-payload-cms-dev",
   "runServices": ["xgic-payload-cms-dev", "postgres"],
