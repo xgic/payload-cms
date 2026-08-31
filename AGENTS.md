@@ -24,7 +24,7 @@ Supported attach path is **Docker Compose**, not a standalone `image` in `devcon
 - `dockerComposeFile`: `.devcontainer/docker-compose.yml`
 - Service: `xgic-payload-cms-dev`
 - Workspace: `/workspace` · `remoteUser`: `node`
-- Image pin: `image: ghcr.io/xgic/payload-cms-dev:0.3.2` on the Docker Compose service
+- Image pin: `image: ghcr.io/xgic/payload-cms-dev:0.3.3` on the Docker Compose service
 - Default project: `name: xgic-payload-cms-dev` plus env `XGIC_COMPOSE_PROJECT` / `XGIC_COMPOSE_FILE` / `XGIC_PRIMARY_SERVICE`
 - Postgres starts with Reopen (`runServices` + `depends_on` health). Mongo remains `--profile mongodb`.
 
@@ -42,7 +42,7 @@ Standalone `image` reopen produces non-deterministic container names (Docker’s
 6. After named-volume recreate: `pnpm install` (see [docs/dev-performance.md](docs/dev-performance.md))
 7. Daily: `xgic payload dev` (requires setup first)
 
-**Do not** reintroduce host `initializeCommand` Bash hooks or a `postStartCommand` for Git `safe.directory` (tracked in [#9](https://github.com/xgic/payload-cms/issues/9) / [payload-cms-dev#49](https://github.com/xgic/payload-cms-dev/issues/49)). Production deploy details never belong in this public repo.
+Git DX is Compose-start only (chown `ssh-home` → `configure-git-dx.sh --quiet`; failure is non-fatal). Prefer HTTPS + VS Code host credential helper. Optional SSH agent overlay: `.devcontainer/docker-compose.git-dx.yml` (Docker Desktop sock only — never on plain Linux Engine). **Do not** reintroduce host `initializeCommand` / `postStartCommand` hooks. Production deploy details never belong in this public repo.
 
 Do **not** dual-support `DATABASE_URI` in app code. Credential regenerate / `DATABASE_URL` sync is [payload-cms-cli#26](https://github.com/xgic/payload-cms-cli/issues/26). Producer contract: [payload-cms-dev#50](https://github.com/xgic/payload-cms-dev/issues/50). This reopen fix: [#10](https://github.com/xgic/payload-cms/issues/10).
 

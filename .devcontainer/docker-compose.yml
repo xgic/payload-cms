@@ -8,18 +8,37 @@ services:
   # Primary Dev Container service (VS Code "service" target).
   # Keep the service key as xgic-payload-cms-dev for modular XGIC CLI defaults.
   xgic-payload-cms-dev:
-    image: ghcr.io/xgic/payload-cms-dev:0.3.2
-    # Named volumes are created as root; chown only when ownership is wrong (uid != 1000).
+    image: ghcr.io/xgic/payload-cms-dev:0.3.3
+    # Start as root only long enough to fix ssh-home + named-volume ownership.
+    # Git DX must never prevent keep-alive — VS Code attach requires a running
+    # container. Do not put Git DX in devcontainer.json lifecycle hooks.
+    user: "0:0"
     command:
-      - sh
-      - -c
+      - /bin/bash
+      - -lc
       - |
+        set -uo pipefail
+        mkdir -p /home/node/.ssh
+        chown -R node:node /home/node/.ssh
+        chmod 700 /home/node/.ssh
         for d in /workspace/node_modules /workspace/.next; do
           if [ -d "$$d" ] && [ "$$(stat -c %u "$$d" 2>/dev/null)" != "1000" ]; then
             chown -R 1000:1000 "$$d" || true
           fi
         done
-        exec tail -f /dev/null
+        if [ -f /workspace/.devcontainer/scripts/align_docker_sock_gid.py ]; then
+          python3 /workspace/.devcontainer/scripts/align_docker_sock_gid.py \
+            || echo "[docker-sock] align failed (non-fatal); continuing"
+        fi
+        if [ -f /workspace/.devcontainer/scripts/configure-git-dx.sh ]; then
+          sed -i 's/\r$//' \
+            /workspace/.devcontainer/scripts/configure-git-dx.sh \
+            /workspace/.devcontainer/scripts/lib/*.sh 2>/dev/null || true
+          runuser -u node -- bash \
+            /workspace/.devcontainer/scripts/configure-git-dx.sh --quiet \
+            || echo "[git-dx] configure failed (non-fatal); continuing"
+        fi
+        exec runuser -u node -- tail -f /dev/null
     container_name: xgic-payload-cms-dev
     env_file:
       - path: .env
@@ -28,6 +47,7 @@ services:
       XGIC_COMPOSE_PROJECT: xgic-payload-cms-dev
       XGIC_COMPOSE_FILE: .devcontainer/docker-compose.yml
       XGIC_PRIMARY_SERVICE: xgic-payload-cms-dev
+      NEXT_TELEMETRY_DISABLED: "1"
     networks:
       - app-network
     ports:
@@ -35,6 +55,10 @@ services:
     volumes:
       - ..:/workspace:cached
       - /var/run/docker.sock:/var/run/docker.sock
+      # Named volume for ~/.ssh (known_hosts; optional manual keys). Do NOT
+      # bind-mount host $HOME/.ssh. Prefer HTTPS + VS Code credential helper,
+      # or the optional docker-compose.git-dx.yml SSH agent overlay.
+      - ssh-home:/home/node/.ssh
       - vscode-srv-ext:/home/node/.vscode-server/extensions
       # Named volumes for node_modules/.next on bind-mounted workspaces
       # (see docs/dev-performance.md).
@@ -87,6 +111,8 @@ volumes:
     name: xgic-payload-cms-dev-node-modules
   app-next:
     name: xgic-payload-cms-dev-next
+  ssh-home:
+    name: xgic-payload-cms-dev-ssh-home
 
 networks:
   app-network:

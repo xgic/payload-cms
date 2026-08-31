@@ -53,5 +53,5 @@ Do **not** teach application code to accept both `DATABASE_URI` and
 
 - Template Docker Compose-first reopen: [#10](https://github.com/xgic/payload-cms/issues/10)
 - Producer consumer contract: [payload-cms-dev#50](https://github.com/xgic/payload-cms-dev/issues/50)
-- Host-conditional Git `safe.directory` / SSH agent: [#9](https://github.com/xgic/payload-cms/issues/9),
+- Host-conditional Git DX (Compose start): this template; producer
   [payload-cms-dev#49](https://github.com/xgic/payload-cms-dev/issues/49)
