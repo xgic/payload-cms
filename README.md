@@ -21,7 +21,7 @@ This repository is XGIC’s **recommended starting point** for new [Payload CMS]
 | Long-horizon maintainability | Image evolution in the producer; app code stays thin and focused |
 
 ```text
-ghcr.io/xgic/payload-cms-dev:0.3.3
+ghcr.io/xgic/payload-cms-dev:0.3.4
 ```
 
 Image producer and CI: **[xgic/payload-cms-dev](https://github.com/xgic/payload-cms-dev)** · Multi-repo standards: **[xgic/ai](https://github.com/xgic/ai)**
@@ -64,7 +64,7 @@ The result is a professional, open-source path to **reproducible Payload CMS dev
 | Benefit | Detail |
 |---------|--------|
 | **Fastest path to a working workspace** | Pre-built image; no multi-stage Dockerfile rebuild in every app repo |
-| **Reproducible pins** | Semver image tags (e.g. `0.3.3`) match producer releases |
+| **Reproducible pins** | Semver image tags (e.g. `0.3.4`) match producer releases |
 | **AI-operable** | Stable command surface in [AGENTS.md](AGENTS.md); agents use `xgic` instead of inventing scripts |
 | **Clear ownership** | App code lives in *your* repo; image improvements land in [payload-cms-dev](https://github.com/xgic/payload-cms-dev); CLI logic in modular packages |
 | **Open-source rigor** | Apache-2.0, CODEOWNERS, public-safe docs, human-reviewed PRs |
@@ -113,7 +113,7 @@ When prompted, choose **Reopen in Container**, or run:
 **Dev Containers: Reopen in Container** from the Command Palette  
 (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> / <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).
 
-VS Code starts the **Docker Compose** project in `.devcontainer/docker-compose.yml` (service `xgic-payload-cms-dev`, default project name `xgic-payload-cms-dev`) and **pulls** `ghcr.io/xgic/payload-cms-dev:0.3.3` (first pull may take several minutes). Postgres starts with the app. Do **not** use a standalone `image` in `devcontainer.json` — that produces non-deterministic container names (Docker’s default `adjective_noun` style) and detaches the DB from the IDE project.
+VS Code starts the **Docker Compose** project in `.devcontainer/docker-compose.yml` (service `xgic-payload-cms-dev`, default project name `xgic-payload-cms-dev`) and **pulls** `ghcr.io/xgic/payload-cms-dev:0.3.4` (first pull may take several minutes). Postgres starts with the app. Do **not** use a standalone `image` in `devcontainer.json` — that produces non-deterministic container names (Docker’s default `adjective_noun` style) and detaches the DB from the IDE project.
 
 #### 4. Configure and scaffold (first session — explicit CLI)
 
@@ -196,16 +196,16 @@ code .
 The producer image is pinned on the **Compose** primary service in `.devcontainer/docker-compose.yml` (not a standalone `image` field in `devcontainer.json`):
 
 ```text
-ghcr.io/xgic/payload-cms-dev:0.3.3
+ghcr.io/xgic/payload-cms-dev:0.3.4
 ```
 
 | Tag | Use when |
 |-----|----------|
-| `:0.3.3` (semver) | **Default for app work** — matches producer [v0.3.3](https://github.com/xgic/payload-cms-dev/releases/tag/v0.3.3) |
+| `:0.3.4` (semver) | **Default for app work** — matches producer [v0.3.4](https://github.com/xgic/payload-cms-dev/releases/tag/v0.3.4) |
 | `:latest` / `:main` | You deliberately want rolling producer `main` (less reproducible) |
 
 ```bash
-docker pull ghcr.io/xgic/payload-cms-dev:0.3.3
+docker pull ghcr.io/xgic/payload-cms-dev:0.3.4
 ```
 
 To change the pin, edit the `image:` on service `xgic-payload-cms-dev` in `.devcontainer/docker-compose.yml`, commit, and **Rebuild Container**.
@@ -365,12 +365,12 @@ Docker-heavy tooling lives primarily on the **producer** for contributors who ed
 
 | Symptom | What to try |
 |---------|-------------|
-| Image pull fails | Confirm Docker is running; `docker pull ghcr.io/xgic/payload-cms-dev:0.3.3`; check [package page](https://github.com/users/xgic/packages/container/package/payload-cms-dev) |
+| Image pull fails | Confirm Docker is running; `docker pull ghcr.io/xgic/payload-cms-dev:0.3.4`; check [package page](https://github.com/users/xgic/packages/container/package/payload-cms-dev) |
 | Non-deterministic container name (`adjective_noun` style) / CLI project mismatch | You are on an image-only reopen. Rebuild so `dockerComposeFile` attaches to service `xgic-payload-cms-dev` |
 | `xgic: command not found` in a one-off `docker run` | Use a **non-login** shell so image `PATH` is preserved, or open via Dev Containers (recommended) |
 | Slow `pnpm` / first `/admin` on a bind-mounted workspace | Named volumes over `/workspace/node_modules` and `/workspace/.next`. After volume recreate: `pnpm install`. See [docs/dev-performance.md](docs/dev-performance.md) |
 | Auth failures after `xgic payload env --regenerate` | App `.env` / `DATABASE_URL` sync is tracked in [payload-cms-cli#26](https://github.com/xgic/payload-cms-cli/issues/26). Recreate the local Postgres volume if it was initialized with the previous password |
-| Git `safe.directory` / SSH agent in the container | Compose-start Git DX (`configure-git-dx.sh --quiet`). Prefer HTTPS. Optional overlay: `.devcontainer/docker-compose.git-dx.yml`. Not a `postStartCommand` |
+| Git `safe.directory` / SSH agent in the container | Image Git DX (`:0.3.4` entrypoint). Prefer HTTPS. Optional overlay: `.devcontainer/docker-compose.git-dx.yml`. Not a `postStartCommand` |
 | Need a clean project/DB | `xgic payload reset --dry-run` then `--yes` only after review |
 | Image definition bug | File an issue or PR on [payload-cms-dev](https://github.com/xgic/payload-cms-dev), not only in your app repo |
 | CLI behavior bug | File on the relevant modular CLI repository |

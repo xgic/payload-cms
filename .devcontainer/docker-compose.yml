@@ -8,36 +8,22 @@ services:
   # Primary Dev Container service (VS Code "service" target).
   # Keep the service key as xgic-payload-cms-dev for modular XGIC CLI defaults.
   xgic-payload-cms-dev:
-    image: ghcr.io/xgic/payload-cms-dev:0.3.3
-    # Start as root only long enough to fix ssh-home + named-volume ownership.
-    # Git DX must never prevent keep-alive — VS Code attach requires a running
-    # container. Do not put Git DX in devcontainer.json lifecycle hooks.
+    image: ghcr.io/xgic/payload-cms-dev:0.3.4
+    # Root so the image entrypoint can chown ssh-home and align docker-sock
+    # GID. Git DX lives in the image (/usr/local/lib/xgic/git-dx), not this
+    # repo. This command only chowns template named volumes, then keep-alive
+    # as node. Do not put Git DX in devcontainer.json lifecycle hooks.
     user: "0:0"
     command:
       - /bin/bash
       - -lc
       - |
         set -uo pipefail
-        mkdir -p /home/node/.ssh
-        chown -R node:node /home/node/.ssh
-        chmod 700 /home/node/.ssh
         for d in /workspace/node_modules /workspace/.next; do
           if [ -d "$$d" ] && [ "$$(stat -c %u "$$d" 2>/dev/null)" != "1000" ]; then
             chown -R 1000:1000 "$$d" || true
           fi
         done
-        if [ -f /workspace/.devcontainer/scripts/align_docker_sock_gid.py ]; then
-          python3 /workspace/.devcontainer/scripts/align_docker_sock_gid.py \
-            || echo "[docker-sock] align failed (non-fatal); continuing"
-        fi
-        if [ -f /workspace/.devcontainer/scripts/configure-git-dx.sh ]; then
-          sed -i 's/\r$//' \
-            /workspace/.devcontainer/scripts/configure-git-dx.sh \
-            /workspace/.devcontainer/scripts/lib/*.sh 2>/dev/null || true
-          runuser -u node -- bash \
-            /workspace/.devcontainer/scripts/configure-git-dx.sh --quiet \
-            || echo "[git-dx] configure failed (non-fatal); continuing"
-        fi
         exec runuser -u node -- tail -f /dev/null
     container_name: xgic-payload-cms-dev
     env_file:
