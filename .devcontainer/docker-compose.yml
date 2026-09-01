@@ -8,7 +8,7 @@ services:
   # Primary Dev Container service (VS Code "service" target).
   # Keep the service key as xgic-payload-cms-dev for modular XGIC CLI defaults.
   xgic-payload-cms-dev:
-    image: ghcr.io/xgic/payload-cms-dev:0.3.4
+    image: ghcr.io/xgic/payload-cms-dev:0.3.5
     # Root so the image entrypoint can chown ssh-home and align docker-sock
     # GID. Git DX lives in the image (/usr/local/lib/xgic/git-dx), not this
     # repo. This command only chowns template named volumes, then keep-alive
