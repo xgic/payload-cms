@@ -52,6 +52,6 @@ Do **not** dual-support `DATABASE_URI` in app code. Credential regenerate / `DAT
 
 - Public-safe content only.
 - Human UI review before merge to `main`.
-- Conventional Commits; **labels required**.
+- Conventional Commits. **Labels (mandatory):** every issue and pull request gets exactly one type label in the create call: `bug`, `enhancement`, `documentation`, `standards`, or `chore`. Welcome Discussion posts use `welcome` and `documentation`. Do not put scoped GitLab labels on GitHub. https://github.com/xgic/ai/blob/main/docs/community-health.md#labels-required
 - Prefer full `https://github.com/xgic/...` URLs.
 - CLI changes → modular CLI repos; image changes → `payload-cms-dev`.
